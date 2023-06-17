@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyBlog.Data.Context;
 using MyBlog.Data.Repositories.Abstracts;
 using MyBlog.Data.Repositories.Concerets;
+using MyBlog.Data.UnitOfWorks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace MyBlog.Data.Extensions
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>)); //Repository Service
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection")));
-
+            services.AddScoped<IUnitOfWork, UnitOfWork>(); //UnitOfWork Service
             return services;
         }
     }
