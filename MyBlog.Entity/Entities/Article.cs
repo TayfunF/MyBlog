@@ -14,7 +14,9 @@ namespace MyBlog.Entity.Entities
         public int ViewCount { get; set; }
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
-        public Guid ImageId { get; set; }
+        public Guid? ImageId { get; set; }
         public Image Image { get; set; }
+        public Guid AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace MyBlog.Data.Seeds
                 CreatedBy = "Admin Test",
                 CreatedDate = DateTime.Now,
                 IsDeleted = false,
+                AppUserId = Guid.Parse("2C34DA79-F839-4AA8-95DE-1D31A3B39C28")
             },
             new Article
             {
@@ -36,6 +37,7 @@ namespace MyBlog.Data.Seeds
                 CreatedBy = "Admin Test",
                 CreatedDate = DateTime.Now,
                 IsDeleted = false,
+                AppUserId = Guid.Parse("0B48803D-A991-48E2-A19E-D6CA562F1D96")
             });
         }
     }
