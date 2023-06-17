@@ -23,7 +23,7 @@ namespace MyBlog.Service.Services.Concerets
         }
 
         //Silinmemis makaleleri kategorileri ile beraber getir.
-        public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeleted()
+        public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedAsync()
         {
             var articles = await _unitOfWork.GetRepository<Article>().GetAllAsync(a => !a.IsDeleted, b => b.Category);
             var map = _mapper.Map<List<ArticleDto>>(articles);
