@@ -4,6 +4,7 @@ using MyBlog.Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,8 @@ namespace MyBlog.Data.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            var assembly = Assembly.GetExecutingAssembly();    //Seed ve Configuration icin
+            builder.ApplyConfigurationsFromAssembly(assembly); //Seed ve Configuration icin
         }
 
     }
