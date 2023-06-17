@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyBlog.Service.Services.Abstracts;
 
 namespace MyBlog.Web.Areas.Admin.Controllers
 {
@@ -6,9 +7,17 @@ namespace MyBlog.Web.Areas.Admin.Controllers
     [Route("Admin/[controller]/[action]")]
     public class ArticleController : Controller
     {
-        public IActionResult Index()
+        private readonly IArticleService _articleService;
+
+        public ArticleController(IArticleService articleService)
         {
-            return View();
+            _articleService = articleService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            return View(await _articleService.GetAllArticlesWithCategoryNonDeletedAsync());
         }
     }
 }

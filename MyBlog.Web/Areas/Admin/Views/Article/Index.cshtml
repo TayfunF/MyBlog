@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<ArticleDto>
+
+@{
     ViewData["Title"] = "Makale Listesi";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
@@ -34,6 +36,17 @@
                     </tr>
                 </tfoot>
                 <tbody class="table-border-bottom-0">
+                    @foreach (var item in Model)
+                    {
+                        <tr name="@item.Id">
+                            <td>@item.Title</td>
+                            <td>@item.Category.Name</td>
+                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CreatedBy</td>
+                            <td>@(item.IsDeleted ? "Aktif Değil" : "Aktif")</td>
+                            <td></td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
