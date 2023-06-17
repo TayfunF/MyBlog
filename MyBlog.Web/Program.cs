@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+using MyBlog.Data.Context;
 using MyBlog.Data.Extensions;
+using MyBlog.Entity.Entities;
 using MyBlog.Service.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +9,41 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.LoadDataLayerExtension(builder.Configuration);
 builder.Services.LoadServiceLayerExtensions(); //MyServiceLayerExtension
+builder.Services.AddSession(); //Oturumlar icin
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+
+//-------------------------------DÝKKAT-------------------------------
+//CANLI ÖNCESÝ BURAYI KALDIR
+builder.Services.AddIdentity<AppUser, AppRole>(
+    opt =>
+    {
+        opt.Password.RequireNonAlphanumeric = false;
+        opt.Password.RequireLowercase = false;
+        opt.Password.RequireUppercase = false;
+    })
+    .AddRoleManager<RoleManager<AppRole>>().
+    AddEntityFrameworkStores<AppDbContext>().
+    AddDefaultTokenProviders();
+//-------------------------------DÝKKAT-------------------------------
+//-------------------------------DÝKKAT-------------------------------
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = new PathString("/Admin/Auth/Login"); //Area/[controller]/[action] => Biri giriþ yapmamýþsa bu sayfaya yönlendirsin diye.
+    config.LogoutPath = new PathString("/Admin/Auth/Logout");
+    config.Cookie = new CookieBuilder
+    {
+        Name = "tayfunfirtina",
+        HttpOnly = true,
+        SameSite = SameSiteMode.Strict,
+        SecurePolicy = CookieSecurePolicy.SameAsRequest //CANLIDA BURAYI "always" olarak deðiþtirmeyi unutma
+    };
+    config.SlidingExpiration = true;
+    config.ExpireTimeSpan = TimeSpan.FromDays(7);
+    config.AccessDeniedPath = new PathString("/Admin/Auth/AccessDenied"); // => Yetkisiz yapýlmak istenen iþlemlerde bu sayfaya yönlendiricem.
+});
+//-------------------------------DÝKKAT-------------------------------
+
 
 var app = builder.Build();
 
@@ -20,9 +57,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession(); //Oturumlar icin
 
 app.UseRouting();
-
+app.UseAuthentication();//Her zaman UseAuthorizationun ustunde olmasi lazim
 app.UseAuthorization();
 
 app.MapControllerRoute(
