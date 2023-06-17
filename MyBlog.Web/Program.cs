@@ -76,4 +76,16 @@ app.UseEndpoints(endpoints =>
     );
 });
 
+//Tek bir Area olacaksa asagidaki kodu kullanabilirim.
+//Bu kodu kullanirsam Area-Admin tarafindaki Controllerda Route[....] helperini kullanmama gerek kalmaz.
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapAreaControllerRoute(
+//    name: "Admin",
+//    areaName: "Admin",
+//    pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+//    );
+//    endpoints.MapDefaultControllerRoute();
+//});
+
 app.Run();
