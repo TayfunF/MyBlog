@@ -15,6 +15,6 @@ namespace MyBlog.Core.Entities
         public virtual DateTime? ModifiedDate { get; set; }
         public virtual string? DeletedBy { get; set; }
         public virtual DateTime? DeletedDate { get; set; }
-        public virtual bool Deleted { get; set; } = false;
+        public virtual bool IsDeleted { get; set; } = false;
     }
 }
