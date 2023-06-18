@@ -49,6 +49,9 @@
                                 <a class="btn btn-warning btn-sm" data-id="@item.Id" asp-area="Admin" asp-controller="Article" asp-action="Update" asp-route-articleId="@item.Id">
                                     <i class="bx bx-edit"></i>
                                 </a>
+                                <a class="btn btn-danger btn-sm" data-id="@item.Id" asp-area="Admin" asp-controller="Article" asp-action="Delete" asp-route-articleId="@item.Id">
+                                    <i class="bx bx-trash"></i>
+                                </a>
                             </td>
                         </tr>
                     }

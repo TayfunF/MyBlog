@@ -30,6 +30,18 @@ namespace MyBlog.Service.Services.Concerets
             await _unitOfWork.SaveAsync();
         }
 
+        //Makale Silme. (Cop kutusuna tasima)
+        public async Task DeleteSafeAsync(Guid articleId)
+        {
+            var article = await _unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
+
+            article.IsDeleted = true;
+            article.DeletedDate = DateTime.Now;
+
+            await _unitOfWork.GetRepository<Article>().UpdateAsync(article);
+            await _unitOfWork.SaveAsync();
+        }
+
         //Silinmemis makaleleri kategorileri ile beraber getir.
         public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedAsync()
         {
