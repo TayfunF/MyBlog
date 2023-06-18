@@ -22,6 +22,14 @@ namespace MyBlog.Service.Services.Concerets
             _mapper = mapper;
         }
 
+        //Makale Ekleme
+        public async Task AddArticleAsync(ArticleAddDto articleAddDto)
+        {
+            var map = _mapper.Map<Article>(articleAddDto);
+            await _unitOfWork.GetRepository<Article>().AddAsync(map);
+            await _unitOfWork.SaveAsync();
+        }
+
         //Silinmemis makaleleri kategorileri ile beraber getir.
         public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedAsync()
         {

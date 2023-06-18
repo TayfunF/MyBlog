@@ -15,6 +15,7 @@ namespace MyBlog.Service.Extensions
         public static IServiceCollection LoadServiceLayerExtensions(this IServiceCollection services)
         {
             services.AddScoped<IArticleService, ArticleService>(); //Article Service
+            services.AddScoped<ICategoryService, CategoryService>(); //Category Service
 
             var assembly = Assembly.GetExecutingAssembly(); //AutoMapper Service
             services.AddAutoMapper(assembly); //AutoMapper Service
