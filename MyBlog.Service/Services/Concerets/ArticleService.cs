@@ -38,5 +38,28 @@ namespace MyBlog.Service.Services.Concerets
 
             return map;
         }
+
+        //Silinmemis makaleyi kategorisi ile beraber getir.
+        public async Task<ArticleDto> GetArticleWithCategoryNonDeletedAsync(Guid articleId)
+        {
+            var article = await _unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id == articleId, x => x.Category);
+            var map = _mapper.Map<ArticleDto>(article);
+
+            return map;
+        }
+
+        //Makele guncelleme.
+        public async Task UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
+        {
+            var article = await _unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id == articleUpdateDto.Id, x => x.Category);
+            article.ModifiedBy = "undefined";
+            article.ModifiedDate = DateTime.Now;
+
+            _mapper.Map(articleUpdateDto, article);
+
+            await _unitOfWork.GetRepository<Article>().UpdateAsync(article);
+            await _unitOfWork.SaveAsync();
+
+        }
     }
 }

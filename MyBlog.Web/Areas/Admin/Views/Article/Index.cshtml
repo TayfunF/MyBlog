@@ -45,7 +45,11 @@
                             <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                             <td>@item.CreatedBy</td>
                             <td>@(item.IsDeleted ? "Aktif Değil" : "Aktif")</td>
-                            <td></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" data-id="@item.Id" asp-area="Admin" asp-controller="Article" asp-action="Update" asp-route-articleId="@item.Id">
+                                    <i class="bx bx-edit"></i>
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

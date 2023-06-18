@@ -13,8 +13,10 @@ namespace MyBlog.Service.AutoMapper
     {
         public ArticleProfile()
         {
-            CreateMap<Article,ArticleDto>().ReverseMap();
-            CreateMap<Article,ArticleAddDto>().ReverseMap();
+            CreateMap<Article, ArticleDto>().ReverseMap();
+            CreateMap<Article, ArticleAddDto>().ReverseMap();
+            CreateMap<Article, ArticleUpdateDto>().ReverseMap();
+            CreateMap<ArticleDto, ArticleUpdateDto>().ReverseMap();
         }
     }
 }
