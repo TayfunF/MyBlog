@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Entity.DTOs.Articles;
 using MyBlog.Entity.DTOs.Categories;
+using MyBlog.Entity.Entities;
+using MyBlog.Service.Extensions;
 using MyBlog.Service.Services.Abstracts;
 
 namespace MyBlog.Web.Areas.Admin.Controllers
@@ -13,12 +16,14 @@ namespace MyBlog.Web.Areas.Admin.Controllers
         private readonly IArticleService _articleService;
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
+        private readonly IValidator<Article> _validator;
 
-        public ArticleController(IArticleService articleService, ICategoryService categoryService, IMapper mapper)
+        public ArticleController(IArticleService articleService, ICategoryService categoryService, IMapper mapper, IValidator<Article> validator)
         {
             _articleService = articleService;
             _categoryService = categoryService;
             _mapper = mapper;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -37,11 +42,20 @@ namespace MyBlog.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ArticleAddDto articleAddDto)
         {
-            await _articleService.AddArticleAsync(articleAddDto);
-            RedirectToAction("Index", "Article", new { Area = "Admin" });
+            var map = _mapper.Map<Article>(articleAddDto);
+            var result = await _validator.ValidateAsync(map);
 
-            var categories = await _categoryService.GetAllCategoriesNonDeletedAsync();
-            return View(new ArticleAddDto { Categories = categories });
+            if (result.IsValid)
+            {
+                await _articleService.AddArticleAsync(articleAddDto);
+                return RedirectToAction("Index", "Article", new { Area = "Admin" });
+            }
+            else
+            {
+                result.AddToModelState(this.ModelState);
+                List<CategoryDto> categories = await _categoryService.GetAllCategoriesNonDeletedAsync();
+                return View(new ArticleAddDto { Categories = categories });
+            }
         }
 
         [HttpGet]

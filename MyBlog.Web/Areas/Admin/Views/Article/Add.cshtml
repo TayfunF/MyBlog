@@ -15,6 +15,7 @@
             <div class="card mb-4">
                 <h5 class="card-header"></h5>
                 <form asp-area="Admin" asp-controller="Article" asp-action="Add" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="card-body">
                         <div class="mb-3">
                             <select id="categoryList" class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(Model.Categories,"Id","Name"))"></select>
