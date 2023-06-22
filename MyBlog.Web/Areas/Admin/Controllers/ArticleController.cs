@@ -74,7 +74,17 @@ namespace MyBlog.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(ArticleUpdateDto articleUpdateDto)
         {
-            await _articleService.UpdateArticleAsync(articleUpdateDto);
+            var map = _mapper.Map<Article>(articleUpdateDto);
+            var result = await _validator.ValidateAsync(map);
+
+            if (result.IsValid)
+            {
+                await _articleService.UpdateArticleAsync(articleUpdateDto);
+            }
+            else
+            {
+                result.AddToModelState(this.ModelState);
+            }
 
             var categories = await _categoryService.GetAllCategoriesNonDeletedAsync();
             articleUpdateDto.Categories = categories;
