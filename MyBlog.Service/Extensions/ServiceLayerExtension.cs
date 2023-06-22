@@ -1,4 +1,5 @@
 ﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using MyBlog.Service.FluentValidations;
 using MyBlog.Service.Services.Abstracts;
@@ -19,6 +20,8 @@ namespace MyBlog.Service.Extensions
         {
             services.AddScoped<IArticleService, ArticleService>(); //Article Service
             services.AddScoped<ICategoryService, CategoryService>(); //Category Service
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //ClaimsPrincipal Kullaniciyi bulma servisi
 
             var assembly = Assembly.GetExecutingAssembly(); //AutoMapper Service
             services.AddAutoMapper(assembly); //AutoMapper Service
