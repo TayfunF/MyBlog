@@ -13,7 +13,7 @@ namespace MyBlog.Service.Services.Abstracts
         Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedAsync();
         Task AddArticleAsync(ArticleAddDto articleAddDto);
         Task<ArticleDto> GetArticleWithCategoryNonDeletedAsync(Guid articleId);
-        Task UpdateArticleAsync(ArticleUpdateDto articleUpdateDto);
-        Task DeleteSafeAsync(Guid articleId);
+        Task<string> UpdateArticleAsync(ArticleUpdateDto articleUpdateDto);
+        Task<string> DeleteSafeAsync(Guid articleId);
     }
 }

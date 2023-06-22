@@ -33,7 +33,8 @@ namespace MyBlog.Service.Services.Concerets
         }
 
         //Makale Silme. (Cop kutusuna tasima)
-        public async Task DeleteSafeAsync(Guid articleId)
+        //Toastr Mesajda basligi donebilmek icin Task<string> eklendi
+        public async Task<string> DeleteSafeAsync(Guid articleId)
         {
             var article = await _unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
 
@@ -42,6 +43,8 @@ namespace MyBlog.Service.Services.Concerets
 
             await _unitOfWork.GetRepository<Article>().UpdateAsync(article);
             await _unitOfWork.SaveAsync();
+
+            return article.Title;
         }
 
         //Silinmemis makaleleri kategorileri ile beraber getir.
@@ -63,7 +66,8 @@ namespace MyBlog.Service.Services.Concerets
         }
 
         //Makele guncelleme.
-        public async Task UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
+        //Toastr Mesajda basligi donebilmek icin Task<string> eklendi
+        public async Task<string> UpdateArticleAsync(ArticleUpdateDto articleUpdateDto)
         {
             var article = await _unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id == articleUpdateDto.Id, x => x.Category);
 
@@ -76,6 +80,12 @@ namespace MyBlog.Service.Services.Concerets
 
                 await _unitOfWork.GetRepository<Article>().UpdateAsync(article);
                 await _unitOfWork.SaveAsync();
+
+                return article.Title;
+            }
+            else
+            {
+                return "";
             }
         }
     }
