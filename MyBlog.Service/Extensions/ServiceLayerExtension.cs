@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyBlog.Service.FluentValidations;
 using MyBlog.Service.Services.Abstracts;
 using MyBlog.Service.Services.Concerets;
+using MyBlog.Service.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,6 +21,7 @@ namespace MyBlog.Service.Extensions
         {
             services.AddScoped<IArticleService, ArticleService>(); //Article Service
             services.AddScoped<ICategoryService, CategoryService>(); //Category Service
+            services.AddScoped<IImageHelper, ImageHelper>(); // ImageUpload Service
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //ClaimsPrincipal Kullaniciyi bulma servisi
 

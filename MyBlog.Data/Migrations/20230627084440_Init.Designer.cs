@@ -12,8 +12,8 @@ using MyBlog.Data.Context;
 namespace MyBlog.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230617125626_Initial")]
-    partial class Initial
+    [Migration("20230627084440_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,21 +55,21 @@ namespace MyBlog.Data.Migrations
                         new
                         {
                             Id = new Guid("dfb45ace-1801-46b3-917b-eeaa7b1539b6"),
-                            ConcurrencyStamp = "27bdab6e-436e-4860-b5c4-b24ccf3cf880",
+                            ConcurrencyStamp = "6e49921f-74ea-46bc-bc58-99b64085a55d",
                             Name = "Superadmin",
                             NormalizedName = "SUPERADMIN"
                         },
                         new
                         {
                             Id = new Guid("95fd6878-a514-4c01-8fb8-eb665e512d3f"),
-                            ConcurrencyStamp = "d06ec2f5-8c30-41e6-8d02-b61b029b5e84",
+                            ConcurrencyStamp = "9f63db64-56fe-49ae-9a38-9b34449bde95",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("ca5fa4ec-be54-47bd-bc29-506687fba08e"),
-                            ConcurrencyStamp = "5d09d669-0ee8-4759-92e8-c1e5817e9702",
+                            ConcurrencyStamp = "659fa2f9-971f-46ac-81fd-16dd318e6303",
                             Name = "user",
                             NormalizedName = "USER"
                         });
@@ -182,7 +182,7 @@ namespace MyBlog.Data.Migrations
                         {
                             Id = new Guid("2c34da79-f839-4aa8-95de-1d31a3b39c28"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "40814b0d-d9cf-49c7-a064-462927eea592",
+                            ConcurrencyStamp = "f78ab72a-9283-4619-a73e-971b8a0be990",
                             Email = "superadmin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Tayfun",
@@ -191,10 +191,10 @@ namespace MyBlog.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPERADMIN@GMAIL.COM",
                             NormalizedUserName = "SUPERADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKOtkYJC0aMiFn8T1Y/Ggo5wAf+JZdQSiWrfIrdTavXhO0L468DHSguvjDHAozS4vQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIHZT/G8OgGvS+KjvGajEA1m2WQk8fZQ4cCTYjug1XpdIlo8Kh/fq36WBaT12makeg==",
                             PhoneNumber = "+905556667788",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "09f81e6b-59c6-49e5-a56b-96c4ac291da5",
+                            SecurityStamp = "74b0db37-4a8e-4daf-9509-be1eda51fc98",
                             TwoFactorEnabled = false,
                             UserName = "superadmin@gmail.com"
                         },
@@ -202,7 +202,7 @@ namespace MyBlog.Data.Migrations
                         {
                             Id = new Guid("0b48803d-a991-48e2-a19e-d6ca562f1d96"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "17825d5f-a727-45c4-9227-d45b96a183ca",
+                            ConcurrencyStamp = "6771ff7b-0618-49a1-a6aa-b603bfabb5a2",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -211,10 +211,10 @@ namespace MyBlog.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJn572NdAKpXhNyTyXkApzrTrHBcGmhAOkAiqV2EYJ4r0uV5KgI8t1TlR1SJ9LLTeQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJRaO0LXjqh9j2fYP2qrinuUsWuorbwuG/O627WzCKE/kp0Ks+UxTk+iG1qe4VKm6Q==",
                             PhoneNumber = "+905556678899",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a99f82b1-fbda-4728-a9f5-45a303efe97b",
+                            SecurityStamp = "59dfbe34-5e83-4f06-97c6-7da9d0d1a704",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         });
@@ -374,12 +374,12 @@ namespace MyBlog.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("82c92381-ac88-4894-9337-1a98a1611006"),
+                            Id = new Guid("e8c46262-d6eb-425c-a061-fc96a2f78e54"),
                             AppUserId = new Guid("2c34da79-f839-4aa8-95de-1d31a3b39c28"),
                             CategoryId = new Guid("4c569a9a-5f41-478f-9d17-69ac5b02ae0b"),
                             Content = "Asp.net Core Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt. Vivamus suscipit tortor eget felis porttitor volutpat. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt. Proin eget tortor risus. Donec rutrum congue leo eget malesuada. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Pellentesque in ipsum id orci porta dapibus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.",
                             CreatedBy = "Admin Test",
-                            CreatedDate = new DateTime(2023, 6, 17, 15, 56, 26, 241, DateTimeKind.Local).AddTicks(9564),
+                            CreatedDate = new DateTime(2023, 6, 27, 11, 44, 40, 85, DateTimeKind.Local).AddTicks(2237),
                             ImageId = new Guid("f71f4b9a-aa60-461d-b398-de31001bf214"),
                             IsDeleted = false,
                             Title = "Asp.net Core Deneme Makalesi 1",
@@ -387,12 +387,12 @@ namespace MyBlog.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("887f1513-7780-4f9c-9408-838e38187d94"),
+                            Id = new Guid("c6f71ba8-7dc1-43f9-8bd6-5e13f3194db5"),
                             AppUserId = new Guid("0b48803d-a991-48e2-a19e-d6ca562f1d96"),
                             CategoryId = new Guid("d23e4f79-9600-4b5e-b3e9-756cdcacd2b1"),
                             Content = "Visual Studio Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt. Vivamus suscipit tortor eget felis porttitor volutpat. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Sed porttitor lectus nibh. Nulla porttitor accumsan tincidunt. Proin eget tortor risus. Donec rutrum congue leo eget malesuada. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur aliquet quam id dui posuere blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Pellentesque in ipsum id orci porta dapibus. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi.",
                             CreatedBy = "Admin Test",
-                            CreatedDate = new DateTime(2023, 6, 17, 15, 56, 26, 241, DateTimeKind.Local).AddTicks(9573),
+                            CreatedDate = new DateTime(2023, 6, 27, 11, 44, 40, 85, DateTimeKind.Local).AddTicks(2243),
                             ImageId = new Guid("d16a6ec7-8c50-4ab0-89a5-02b9a551f0fa"),
                             IsDeleted = false,
                             Title = "Visual Studio Deneme Makalesi 1",
@@ -441,7 +441,7 @@ namespace MyBlog.Data.Migrations
                         {
                             Id = new Guid("4c569a9a-5f41-478f-9d17-69ac5b02ae0b"),
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 6, 17, 15, 56, 26, 241, DateTimeKind.Local).AddTicks(9789),
+                            CreatedDate = new DateTime(2023, 6, 27, 11, 44, 40, 85, DateTimeKind.Local).AddTicks(2371),
                             IsDeleted = false,
                             Name = "ASP.NET Core"
                         },
@@ -449,7 +449,7 @@ namespace MyBlog.Data.Migrations
                         {
                             Id = new Guid("d23e4f79-9600-4b5e-b3e9-756cdcacd2b1"),
                             CreatedBy = "Admin",
-                            CreatedDate = new DateTime(2023, 6, 17, 15, 56, 26, 241, DateTimeKind.Local).AddTicks(9792),
+                            CreatedDate = new DateTime(2023, 6, 27, 11, 44, 40, 85, DateTimeKind.Local).AddTicks(2374),
                             IsDeleted = false,
                             Name = "Visual Studio 2022"
                         });
@@ -500,7 +500,7 @@ namespace MyBlog.Data.Migrations
                         {
                             Id = new Guid("f71f4b9a-aa60-461d-b398-de31001bf214"),
                             CreatedBy = "Admin Test",
-                            CreatedDate = new DateTime(2023, 6, 17, 15, 56, 26, 241, DateTimeKind.Local).AddTicks(9958),
+                            CreatedDate = new DateTime(2023, 6, 27, 11, 44, 40, 85, DateTimeKind.Local).AddTicks(2498),
                             FileName = "images/testimage",
                             FileType = "jpg",
                             IsDeleted = false
@@ -509,7 +509,7 @@ namespace MyBlog.Data.Migrations
                         {
                             Id = new Guid("d16a6ec7-8c50-4ab0-89a5-02b9a551f0fa"),
                             CreatedBy = "Admin Test",
-                            CreatedDate = new DateTime(2023, 6, 17, 15, 56, 26, 241, DateTimeKind.Local).AddTicks(9962),
+                            CreatedDate = new DateTime(2023, 6, 27, 11, 44, 40, 85, DateTimeKind.Local).AddTicks(2501),
                             FileName = "images/vstest",
                             FileType = "png",
                             IsDeleted = false
