@@ -3,6 +3,7 @@ using MyBlog.Data.Context;
 using MyBlog.Data.Extensions;
 using MyBlog.Entity.Entities;
 using MyBlog.Service.Extensions;
+using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,14 @@ builder.Services.LoadServiceLayerExtensions(); //MyServiceLayerExtension
 builder.Services.AddSession(); //Oturumlar icin
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptions() //Toastr Service
+{
+    ProgressBar = true,
+    PositionClass = ToastPositions.TopRight,
+    CloseButton = true,
+    TimeOut = 5000
+
+}).AddRazorRuntimeCompilation();
 
 //-------------------------------DÝKKAT-------------------------------
 //CANLI ÖNCESÝ BURAYI KALDIR
@@ -54,6 +63,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseNToastNotify(); //Toastr icin
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
