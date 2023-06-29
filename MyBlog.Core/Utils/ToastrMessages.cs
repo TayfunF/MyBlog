@@ -43,5 +43,23 @@ namespace MyBlog.Core.Utils
                 return $"{categoryName} başlıklı kategori silinmiştir.";
             }
         }
+
+        public static class UserMessage
+        {
+            public static string AddMessage(string userName)
+            {
+                return $"{userName} e-posta adresli kullanıcı eklendi";
+            }
+
+            public static string UpdateMessage(string userName)
+            {
+                return $"{userName} e-posta adresli kullanıcı güncellendi";
+            }
+
+            public static string DeleteMessage(string userName)
+            {
+                return $"{userName} e-posta adresli kullanıcı silinmiştir.";
+            }
+        }
     }
 }
