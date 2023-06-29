@@ -1,4 +1,6 @@
-﻿using MyBlog.Entity.DTOs.Categories;
+﻿using Microsoft.AspNetCore.Http;
+using MyBlog.Entity.DTOs.Categories;
+using MyBlog.Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,8 @@ namespace MyBlog.Entity.DTOs.Articles
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public string ModifiedBy { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public Image Image { get; set; }
+        public IFormFile? Photo { get; set; }
         public Guid CategoryId { get; set; }
         public IList<CategoryDto> Categories { get; set; }
     }
