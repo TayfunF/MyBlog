@@ -1,4 +1,5 @@
-﻿@model List<ArticleDto>
+﻿@using MyBlog.Core.Consts;
+@model List<ArticleDto>
 
 @{
     ViewData["Title"] = "Makale Listesi";
@@ -14,7 +15,10 @@
     <div class="card">
         <h5 class="card-header"> Table Basic</h5>
         <div class="table-responsive text-nowrap m-3">
-            <a class="btn btn-primary mb-3" asp-area="Admin" asp-controller="Article" asp-action="Add">Makale Ekle <i class="bx bx-plus"></i></a>
+            @if (User.IsInRole($"{RoleConsts.Editor}"))
+            {
+                <a class="btn btn-primary mb-3" asp-area="Admin" asp-controller="Article" asp-action="Add">Makale Ekle <i class="bx bx-plus"></i></a>
+            }
             <table class="table table-bordered" id="articleDataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -23,7 +27,10 @@
                         <th>Oluşturma Tarihi</th>
                         <th>Oluşturan</th>
                         <th>Durum</th>
-                        <th>İşlemler</th>
+                        @if (!User.IsInRole($"{RoleConsts.Editor}"))
+                        {
+                            <th>İşlemler</th>
+                        }
                     </tr>
                 </thead>
                 <tfoot>
@@ -33,7 +40,10 @@
                         <th>Oluşturma Tarihi</th>
                         <th>Oluşturan</th>
                         <th>Durum</th>
-                        <th>İşlemler</th>
+                        @if (!User.IsInRole($"{RoleConsts.Editor}"))
+                        {
+                            <th>İşlemler</th>
+                        }
                     </tr>
                 </tfoot>
                 <tbody class="table-border-bottom-0">
@@ -45,14 +55,17 @@
                             <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                             <td>@item.CreatedBy</td>
                             <td>@(item.IsDeleted ? "Aktif Değil" : "Aktif")</td>
-                            <td>
-                                <a class="btn btn-warning btn-sm" data-id="@item.Id" asp-area="Admin" asp-controller="Article" asp-action="Update" asp-route-articleId="@item.Id">
-                                    <i class="bx bx-edit"></i>
-                                </a>
-                                <a class="btn btn-danger btn-sm" data-id="@item.Id" asp-area="Admin" asp-controller="Article" asp-action="Delete" asp-route-articleId="@item.Id">
-                                    <i class="bx bx-trash"></i>
-                                </a>
-                            </td>
+                            @if (!User.IsInRole($"{RoleConsts.Editor}"))
+                            {
+                                <td>
+                                    <a class="btn btn-warning btn-sm" data-id="@item.Id" asp-area="Admin" asp-controller="Article" asp-action="Update" asp-route-articleId="@item.Id">
+                                        <i class="bx bx-edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm" data-id="@item.Id" asp-area="Admin" asp-controller="Article" asp-action="Delete" asp-route-articleId="@item.Id">
+                                        <i class="bx bx-trash"></i>
+                                    </a>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>
