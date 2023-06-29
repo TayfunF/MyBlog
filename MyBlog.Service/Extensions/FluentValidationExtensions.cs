@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,15 @@ namespace MyBlog.Service.Extensions
             foreach (var error in result.Errors)
             {
                 modelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
+        }
+
+        //User islemlerinin hata mesajlari icin method
+        public static void AddToIdentityModelState(this IdentityResult result, ModelStateDictionary modelState)
+        {
+            foreach (var error in result.Errors)
+            {
+                modelState.AddModelError("", error.Description);
             }
         }
     }

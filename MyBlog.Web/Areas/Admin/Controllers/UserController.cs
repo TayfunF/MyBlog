@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Core.Utils;
 using MyBlog.Entity.DTOs.Users;
 using MyBlog.Entity.Entities;
+using MyBlog.Service.Extensions;
 using NToastNotify;
 using System.Linq;
 
@@ -18,13 +20,15 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IToastNotification _toastNotification;
+        private readonly IValidator<AppUser> _validator;
 
-        public UserController(UserManager<AppUser> userManager, IMapper mapper, RoleManager<AppRole> roleManager, IToastNotification toastNotification)
+        public UserController(UserManager<AppUser> userManager, IMapper mapper, RoleManager<AppRole> roleManager, IToastNotification toastNotification, IValidator<AppUser> validator)
         {
             _userManager = userManager;
             _mapper = mapper;
             _roleManager = roleManager;
             _toastNotification = toastNotification;
+            _validator = validator;
         }
 
         public async Task<IActionResult> Index()
@@ -55,6 +59,7 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Add(UserAddDto userAddDto)
         {
             var map = _mapper.Map<AppUser>(userAddDto);
+            var validation = await _validator.ValidateAsync(map);
             var roles = await _roleManager.Roles.ToListAsync();
 
             if (ModelState.IsValid)
@@ -70,8 +75,8 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    foreach (var item in result.Errors)
-                        ModelState.AddModelError("", item.Description);
+                    result.AddToIdentityModelState(this.ModelState);//Extension
+                    validation.AddToModelState(this.ModelState);
                     return View(new UserAddDto { Roles = roles });
                 }
             }
@@ -102,25 +107,31 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
                 var roles = await _roleManager.Roles.ToListAsync();
                 if (ModelState.IsValid)
                 {
-                    _mapper.Map(userUpdateDto, user);
-                    //user.FirstName = userUpdateDto.FirstName;
-                    //user.LastName = userUpdateDto.LastName;
-                    //user.Email = userUpdateDto.Email;
-                    user.UserName = userUpdateDto.Email;
-                    user.SecurityStamp = Guid.NewGuid().ToString();
-                    var result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
+                    var map = _mapper.Map(userUpdateDto, user);
+                    var validation = await _validator.ValidateAsync(map);
+
+                    if (validation.IsValid)
                     {
-                        await _userManager.RemoveFromRoleAsync(user, userRole);
-                        var findRole = await _roleManager.FindByIdAsync(userUpdateDto.RoleId.ToString());
-                        await _userManager.AddToRoleAsync(user, findRole.Name);
-                        _toastNotification.AddSuccessToastMessage(ToastrMessages.UserMessage.UpdateMessage(userUpdateDto.Email), new ToastrOptions { Title = "Başarılı !" });
-                        return RedirectToAction("Index", "User", new { Area = "Admin" });
+                        user.UserName = userUpdateDto.Email;
+                        user.SecurityStamp = Guid.NewGuid().ToString();
+                        var result = await _userManager.UpdateAsync(user);
+                        if (result.Succeeded)
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, userRole);
+                            var findRole = await _roleManager.FindByIdAsync(userUpdateDto.RoleId.ToString());
+                            await _userManager.AddToRoleAsync(user, findRole.Name);
+                            _toastNotification.AddSuccessToastMessage(ToastrMessages.UserMessage.UpdateMessage(userUpdateDto.Email), new ToastrOptions { Title = "Başarılı !" });
+                            return RedirectToAction("Index", "User", new { Area = "Admin" });
+                        }
+                        else
+                        {
+                            result.AddToIdentityModelState(this.ModelState);//Extension
+                            return View(new UserUpdateDto { Roles = roles });
+                        }
                     }
                     else
                     {
-                        foreach (var item in result.Errors)
-                            ModelState.AddModelError("", item.Description);
+                        validation.AddToModelState(this.ModelState);
                         return View(new UserUpdateDto { Roles = roles });
                     }
                 }
@@ -141,8 +152,7 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
             }
             else
             {
-                foreach (var item in result.Errors)
-                    ModelState.AddModelError("", item.Description);
+                result.AddToIdentityModelState(this.ModelState);//Extension
             }
 
             return NotFound();
