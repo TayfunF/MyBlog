@@ -15,7 +15,7 @@ namespace MyBlog.Service.Services.Helpers
         private readonly IWebHostEnvironment _env;
         private readonly string wwwroot;
         private const string imgFolder = "images";
-        private const string articleImagesFoler = "article-images";
+        private const string articleImagesFolder = "article-images";
         private const string userImagesFolder = "user-images";
 
 
@@ -79,7 +79,7 @@ namespace MyBlog.Service.Services.Helpers
 
         public async Task<ImageUploadDto> Upload(string name, IFormFile imageFile, ImageType imageType, string folderName = null)
         {
-            folderName ??= imageType == ImageType.User ? userImagesFolder : articleImagesFoler;
+            folderName ??= imageType == ImageType.User ? userImagesFolder : articleImagesFolder;
 
             if (!Directory.Exists($"{wwwroot}/{imgFolder}/{folderName}"))
                 Directory.CreateDirectory($"{wwwroot}/{imgFolder}/{folderName}");
@@ -93,7 +93,7 @@ namespace MyBlog.Service.Services.Helpers
 
             string newFileName = $"{name}_{dateTime.Millisecond}{fileExtension}";
 
-            var path = Path.Combine($"{wwwroot}/{imgFolder}/{folderName}");
+            var path = Path.Combine($"{wwwroot}/{imgFolder}/{folderName}", newFileName);
 
             await using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 1024 * 1024, useAsync: false);
             await imageFile.CopyToAsync(stream);
@@ -101,9 +101,9 @@ namespace MyBlog.Service.Services.Helpers
 
             string message = imageType == ImageType.User
                 ? $"{newFileName} isimli kullanıcı resmi başarı ile eklenmiştir."
-                : $"{newFileName} isimli makale resmi başarı ile eklenmiştir.";
+                : $"{newFileName} isimli makale resmi başarı ile eklenmiştir";
 
-            return new ImageUploadDto { FullName = $"{folderName}/{newFileName}" };
+            return new ImageUploadDto(){FullName = $"{folderName}/{newFileName}"};
         }
 
         public void Delete(string imageName)
