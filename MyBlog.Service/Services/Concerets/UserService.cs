@@ -94,5 +94,19 @@ namespace MyBlog.Service.Services.Concerets
         {
             return string.Join("~", await _userManager.GetRolesAsync(appUser));
         }
+
+        public async Task<(IdentityResult identityResult, string? email)> DeleteUserAsync(Guid userId)
+        {
+            var user = await GetUserByIdAsync(userId);
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return (result, user.Email);
+            }
+            else
+            {
+                return (result, null);
+            }
+        }
     }
 }

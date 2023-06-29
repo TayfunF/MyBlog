@@ -135,17 +135,15 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(Guid userId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
+            var result = await _userService.DeleteUserAsync(userId);
+            if (result.identityResult.Succeeded)
             {
-                _toastNotification.AddSuccessToastMessage(ToastrMessages.UserMessage.DeleteMessage(user.Email), new ToastrOptions { Title = "Başarılı !" });
+                _toastNotification.AddSuccessToastMessage(ToastrMessages.UserMessage.DeleteMessage(result.email), new ToastrOptions { Title = "Başarılı !" });
                 return RedirectToAction("Index", "User", new { Area = "Admin" });
             }
             else
             {
-                result.AddToIdentityModelState(this.ModelState);//Extension
+                result.identityResult.AddToIdentityModelState(this.ModelState);//Extension
             }
 
             return NotFound();
