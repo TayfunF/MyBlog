@@ -1,13 +1,18 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MyBlog.Core.Enums;
 using MyBlog.Data.UnitOfWorks;
 using MyBlog.Entity.DTOs.Users;
 using MyBlog.Entity.Entities;
+using MyBlog.Service.Extensions;
 using MyBlog.Service.Services.Abstracts;
+using MyBlog.Service.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,13 +24,21 @@ namespace MyBlog.Service.Services.Concerets
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ClaimsPrincipal _user;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly IImageHelper _imageHelper;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IHttpContextAccessor httpContextAccessor, SignInManager<AppUser> signInManager, IImageHelper imageHelper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _roleManager = roleManager;
+            _httpContextAccessor = httpContextAccessor;
+            _user = _httpContextAccessor.HttpContext.User;
+            _signInManager = signInManager;
+            _imageHelper = imageHelper;
         }
 
         public async Task<List<UserDto>> GetAllUsersWithRoleAsync()
@@ -107,6 +120,86 @@ namespace MyBlog.Service.Services.Concerets
             {
                 return (result, null);
             }
+        }
+
+        public async Task<UserProfileDto> GetUserProfileAsync()
+        {
+            var userId = _user.GetLoggedInUserId();
+            var getUserWithImage = await _unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userId, x => x.Image);
+            var map = _mapper.Map<UserProfileDto>(getUserWithImage);
+            map.Image.FileName = getUserWithImage.Image.FileName;
+
+            return map;
+        }
+
+        //Bu service (userService) 'e ait method olduğu için Interfaceye eklemeye gerek yok
+        private async Task<Guid> UploadImageForUser(UserProfileDto userProfileDto)
+        {
+            var userEmail = _user.GetLoggedInEmail();
+
+            var imageUpload = await _imageHelper.Upload($"{userProfileDto.FirstName} {userProfileDto.LastName}", userProfileDto.Photo, ImageType.User);
+            Image image = new Image(imageUpload.FullName, userProfileDto.Photo.ContentType, userEmail);
+            await _unitOfWork.GetRepository<Image>().AddAsync(image);
+
+            return image.Id;
+        }
+
+        public async Task<bool> UserProfileUpdateAsync(UserProfileDto userProfileDto)
+        {
+            var userId = _user.GetLoggedInUserId();
+            var user = await GetUserByIdAsync(userId);
+
+            var isVerified = await _userManager.CheckPasswordAsync(user, userProfileDto.CurrentPassword);
+            if (isVerified && userProfileDto.NewPassword != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, userProfileDto.CurrentPassword, userProfileDto.NewPassword);
+                if (result.Succeeded)
+                {
+                    await _userManager.UpdateSecurityStampAsync(user);
+                    await _signInManager.SignOutAsync();
+                    await _signInManager.PasswordSignInAsync(user, userProfileDto.NewPassword, true, false);
+
+                    _mapper.Map(userProfileDto, user);
+                    #region ESKİHALİ
+                    //user.FirstName = userProfileDto.FirstName;
+                    //user.LastName = userProfileDto.LastName;
+                    //user.PhoneNumber = userProfileDto.PhoneNumber;
+                    #endregion
+
+                    if (userProfileDto.Photo != null)
+                        user.ImageId = await UploadImageForUser(userProfileDto);
+
+                    await _userManager.UpdateAsync(user);
+                    await _unitOfWork.SaveAsync();
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (isVerified)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+                _mapper.Map(userProfileDto, user);
+                #region ESKİHALİ
+                //user.FirstName = userProfileDto.FirstName;
+                //user.LastName = userProfileDto.LastName;
+                //user.PhoneNumber = userProfileDto.PhoneNumber;
+                #endregion
+
+                if (userProfileDto.Photo != null)
+                    user.ImageId = await UploadImageForUser(userProfileDto);
+                //var imageUpload = await _imageHelper.Upload($"{userProfileDto.FirstName} {userProfileDto.LastName}", userProfileDto.Photo, ImageType.User);
+                //Image image = new Image(imageUpload.FullName, userProfileDto.Photo.ContentType, user.Email);
+                //await _unitOfWork.GetRepository<Image>().AddAsync(image);
+
+                await _userManager.UpdateAsync(user);
+                await _unitOfWork.SaveAsync();
+
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
