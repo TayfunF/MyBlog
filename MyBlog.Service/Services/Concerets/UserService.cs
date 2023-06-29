@@ -66,5 +66,33 @@ namespace MyBlog.Service.Services.Concerets
                 return result;
             }
         }
+
+        public async Task<AppUser> GetUserByIdAsync(Guid userId)
+        {
+            return await _userManager.FindByIdAsync(userId.ToString());
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(UserUpdateDto userUpdateDto)
+        {
+            var user = await GetUserByIdAsync(userUpdateDto.Id);
+            var userRole = await GetUserRoleAsync(user);
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                await _userManager.RemoveFromRoleAsync(user, userRole);
+                var findRole = await _roleManager.FindByIdAsync(userUpdateDto.RoleId.ToString());
+                await _userManager.AddToRoleAsync(user, findRole.Name);
+                return result;
+            }
+            else
+            {
+                return result;
+            }
+        }
+        public async Task<string> GetUserRoleAsync(AppUser appUser)
+        {
+            return string.Join("~", await _userManager.GetRolesAsync(appUser));
+        }
     }
 }

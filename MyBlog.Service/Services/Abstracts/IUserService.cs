@@ -14,5 +14,8 @@ namespace MyBlog.Service.Services.Abstracts
         Task<List<UserDto>> GetAllUsersWithRoleAsync();
         Task<List<AppRole>> GetAllRolesAsync();
         Task<IdentityResult> AddUserAsync(UserAddDto userAddDto);
+        Task<AppUser> GetUserByIdAsync(Guid userId);
+        Task<IdentityResult> UpdateUserAsync(UserUpdateDto userUpdateDto);
+        Task<string> GetUserRoleAsync(AppUser appUser);
     }
 }
