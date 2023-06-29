@@ -9,6 +9,7 @@ using MyBlog.Data.UnitOfWorks;
 using MyBlog.Entity.DTOs.Users;
 using MyBlog.Entity.Entities;
 using MyBlog.Service.Extensions;
+using MyBlog.Service.Services.Abstracts;
 using MyBlog.Service.Services.Helpers;
 using NToastNotify;
 using System.Linq;
@@ -27,10 +28,12 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IImageHelper _imageHelper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
 
-        public UserController(UserManager<AppUser> userManager, IMapper mapper, RoleManager<AppRole> roleManager, IToastNotification toastNotification, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IImageHelper imageHelper, IUnitOfWork unitOfWork)
+        public UserController(UserManager<AppUser> userManager, IUserService userService, IMapper mapper, RoleManager<AppRole> roleManager, IToastNotification toastNotification, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IImageHelper imageHelper, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
+            _userService = userService;
             _mapper = mapper;
             _roleManager = roleManager;
             _toastNotification = toastNotification;
@@ -42,25 +45,13 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var users = await _userManager.Users.ToListAsync();
-            var map = _mapper.Map<List<UserDto>>(users);
-
-            //Rolü bulabilmek için döngü ile tüm userları bulmamız lazım ki id sine göre rol bulayım.
-            foreach (var item in map)
-            {
-                var findUser = await _userManager.FindByIdAsync(item.Id.ToString());
-                var role = string.Join("~", await _userManager.GetRolesAsync(findUser)); //superadmin~admin~normaluser..... diye ayırıyor.
-
-                item.Role = role;
-            }
-
-            return View(map);
+            return View(await _userService.GetAllUsersWithRoleAsync());
         }
 
         [HttpGet]
         public async Task<IActionResult> Add()
         {
-            var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _userService.GetAllRolesAsync();
             return View(new UserAddDto { Roles = roles });
         }
 
@@ -69,16 +60,13 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
         {
             var map = _mapper.Map<AppUser>(userAddDto);
             var validation = await _validator.ValidateAsync(map);
-            var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _userService.GetAllRolesAsync();
 
             if (ModelState.IsValid)
             {
-                map.UserName = userAddDto.Email;
-                var result = await _userManager.CreateAsync(map, String.IsNullOrEmpty(userAddDto.Password) ? "" : userAddDto.Password);
+                var result = await _userService.AddUserAsync(userAddDto);
                 if (result.Succeeded)
                 {
-                    var findRole = await _roleManager.FindByIdAsync(userAddDto.RoleId.ToString());
-                    await _userManager.AddToRoleAsync(map, findRole.ToString());
                     _toastNotification.AddSuccessToastMessage(ToastrMessages.UserMessage.AddMessage(userAddDto.Email), new ToastrOptions { Title = "Başarılı !" });
                     return RedirectToAction("Index", "User", new { Area = "Admin" });
                 }

@@ -22,6 +22,7 @@ namespace MyBlog.Service.Extensions
             services.AddScoped<IArticleService, ArticleService>(); //Article Service
             services.AddScoped<ICategoryService, CategoryService>(); //Category Service
             services.AddScoped<IImageHelper, ImageHelper>(); // ImageUpload Service
+            services.AddScoped<IUserService,UserService>(); //User Service
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //ClaimsPrincipal Kullaniciyi bulma servisi
 
