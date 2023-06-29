@@ -18,6 +18,11 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="card-body">
                         <div class="mb-3">
+                            <label asp-for="CategoryId">Kategori</label>
+                            <a class="btn text-primary float-end" data-bs-toggle="modal" data-bs-target="#articleModalCenter">
+                                Ekle <i class="bx bx-plus"></i>
+                            </a>
+
                             <select id="categoryList" class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(Model.Categories,"Id","Name"))"></select>
                             <span asp-validation-for="CategoryId" class="text-danger"></span>
                         </div>
@@ -45,3 +50,43 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="articleModalCenter" tabindex="-1" role="dialog" aria-labelledby="articleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="articleModalLongTitle">Kategori Ekleme</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="d-block form-label">Kategori İsmi</label>
+                        <input class="form-control" type="text" id="categoryName" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" data-keyboard="false" class="btn btn-primary" id="btnSave">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+
+    <script src="~/js/categoryAdd.js"></script>
+    <script>
+        var app = app || {};
+        app.Urls = app.Urls || {};
+
+        app.Urls.baseUrl = '@Url.Content("~")';
+        app.Urls.categoryAddUrl = "@(Url.Action("AddWithAjax", "Category"))";
+        app.Urls.articleAddUrl = "@(Url.Action("Add", "Article"))";
+    </script>
+
+}
