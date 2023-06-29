@@ -20,27 +20,17 @@ namespace tayfunfirtina.Web.Areas.Admin.Controllers
     [Route("Admin/[controller]/[action]")]
     public class UserController : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly RoleManager<AppRole> _roleManager;
         private readonly IToastNotification _toastNotification;
         private readonly IValidator<AppUser> _validator;
-        private readonly SignInManager<AppUser> _signInManager;
-        private readonly IImageHelper _imageHelper;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserService _userService;
 
-        public UserController(UserManager<AppUser> userManager, IUserService userService, IMapper mapper, RoleManager<AppRole> roleManager, IToastNotification toastNotification, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IImageHelper imageHelper, IUnitOfWork unitOfWork)
+        public UserController(IUserService userService, IMapper mapper, IToastNotification toastNotification, IValidator<AppUser> validator)
         {
-            _userManager = userManager;
             _userService = userService;
             _mapper = mapper;
-            _roleManager = roleManager;
             _toastNotification = toastNotification;
             _validator = validator;
-            _signInManager = signInManager;
-            _imageHelper = imageHelper;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<IActionResult> Index()
