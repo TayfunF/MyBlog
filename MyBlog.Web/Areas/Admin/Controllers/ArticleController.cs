@@ -36,6 +36,11 @@ namespace MyBlog.Web.Areas.Admin.Controllers
             return View(await _articleService.GetAllArticlesWithCategoryNonDeletedAsync());
         }
 
+        public async Task<IActionResult> DeletedArticle()
+        {
+            return View(await _articleService.GetAllArticlesWithCategoryDeletedAsync());
+        }
+
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -101,8 +106,16 @@ namespace MyBlog.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid articleId)
         {
-            var title = await _articleService.DeleteSafeAsync(articleId);
+            var title = await _articleService.DeleteSafeArticleAsync(articleId);
             _toastNotification.AddWarningToastMessage(ToastrMessages.ArticleMessage.DeleteMessage(title), new ToastrOptions { Title = "Başarılı !" });
+            return RedirectToAction("Index", "Article", new { Area = "Admin" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UndoDelete(Guid articleId)
+        {
+            var title = await _articleService.DeleteUndoArticleAsync(articleId);
+            _toastNotification.AddWarningToastMessage(ToastrMessages.ArticleMessage.UndoDeleteMessage(title), new ToastrOptions { Title = "Başarılı !" });
             return RedirectToAction("Index", "Article", new { Area = "Admin" });
         }
     }

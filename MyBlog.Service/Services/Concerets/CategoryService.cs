@@ -39,7 +39,7 @@ namespace MyBlog.Service.Services.Concerets
         }
 
         //Kategori Silme (Cop Kutusuna Tasima Islemi)
-        public async Task<string> DeleteSafeAsync(Guid categoryId)
+        public async Task<string> DeleteSafeCategoryAsync(Guid categoryId)
         {
             var userEmail = _user.GetLoggedInEmail();
             var category = await _unitOfWork.GetRepository<Category>().GetByGuidAsync(categoryId);
@@ -52,6 +52,31 @@ namespace MyBlog.Service.Services.Concerets
             await _unitOfWork.SaveAsync();
 
             return category.Name;
+        }
+
+        //Silinen kategoriyi geri alma.
+        public async Task<string> DeleteUndoCategoryAsync(Guid categoryId)
+        {
+            var userEmail = _user.GetLoggedInEmail();
+            var category = await _unitOfWork.GetRepository<Category>().GetByGuidAsync(categoryId);
+
+            category.IsDeleted = false;
+            category.DeletedDate = null;
+            category.DeletedBy = null;
+
+            await _unitOfWork.GetRepository<Category>().UpdateAsync(category);
+            await _unitOfWork.SaveAsync();
+
+            return category.Name;
+        }
+
+        //Silinmis kategorileri getir
+        public async Task<List<CategoryDto>> GetAllCategoriesDeletedAsync()
+        {
+            var categories = await _unitOfWork.GetRepository<Category>().GetAllAsync(x => x.IsDeleted);
+            var map = _mapper.Map<List<CategoryDto>>(categories);
+
+            return map;
         }
 
         //Silinmemis kategorileri getir
