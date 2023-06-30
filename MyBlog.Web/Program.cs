@@ -4,6 +4,7 @@ using MyBlog.Data.Extensions;
 using MyBlog.Entity.Entities;
 using MyBlog.Service.Describers;
 using MyBlog.Service.Extensions;
+using MyBlog.Web.Filters;
 using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,10 @@ builder.Services.LoadServiceLayerExtensions(); //MyServiceLayerExtension
 builder.Services.AddSession(); //Oturumlar icin
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptions() //Toastr Service
+builder.Services.AddControllersWithViews(opt =>
+{
+    opt.Filters.Add<ArticleVisitorFilter>(); //Filters
+}).AddNToastNotifyToastr(new ToastrOptions() //Toastr Service
 {
     ProgressBar = true,
     PositionClass = ToastPositions.TopRight,
