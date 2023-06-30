@@ -34,6 +34,7 @@ namespace MyBlog.Web.Areas.Admin.Controllers
                 var user = await _userManager.FindByEmailAsync(userLoginDto.Email);
                 if (user != null)
                 {
+                    //Eger kullanici giris yaparken 'Beni Hatirla' yi isaretlediyse 'Startup.cs' ye gidicek ve kullanicinin bilgilerini 7 gun tutacak.
                     var result = await _signInManager.PasswordSignInAsync(user, userLoginDto.Password, userLoginDto.RememberMe, false);
                     if (result.Succeeded)
                     {
