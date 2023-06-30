@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Ana Sayfa";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
@@ -41,28 +40,11 @@
                             <div class="card-body">
                                 <div class="card-title d-flex align-items-start justify-content-between">
                                     <div class="avatar flex-shrink-0">
-                                        <img src="~/sneatAdminTemplate/assets/img/icons/unicons/chart-success.png"
-                                             alt="chart success"
-                                             class="rounded" />
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="btn p-0"
-                                                type="button"
-                                                id="cardOpt3"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                        </div>
+                                        <i style="height:30px; font-size:2.25rem;" class='menu-icon bx bx-category'></i>
                                     </div>
                                 </div>
-                                <span class="fw-semibold d-block mb-1">Profit</span>
-                                <h3 class="card-title mb-2">$12,628</h3>
-                                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                                <span class="fw-semibold d-block mb-1">Toplam Kategori <br /> Sayısı</span>
+                                <h3 class="card-title mb-2" id="totalCategory"></h3>
                             </div>
                         </div>
                     </div>
@@ -71,28 +53,11 @@
                             <div class="card-body">
                                 <div class="card-title d-flex align-items-start justify-content-between">
                                     <div class="avatar flex-shrink-0">
-                                        <img src="~/sneatAdminTemplate/assets/img/icons/unicons/wallet-info.png"
-                                             alt="Credit Card"
-                                             class="rounded" />
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="btn p-0"
-                                                type="button"
-                                                id="cardOpt6"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                        </div>
+                                        <i style="height:30px; font-size:2.25rem;" class='menu-icon bx bx-edit-alt'></i>
                                     </div>
                                 </div>
-                                <span>Sales</span>
-                                <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+                                <span>Toplam Makale <br /> Sayısı</span>
+                                <h3 class="card-title text-nowrap mb-1" id="totalArticle"></h3>
                             </div>
                         </div>
                     </div>
@@ -103,7 +68,7 @@
                 <div class="card">
                     <div class="row row-bordered g-0">
                         <div class="col-md-12">
-                            <h5 class="card-header m-0 me-2 pb-3">Total Revenue</h5>
+                            <h5 class="card-header m-0 me-2 pb-3">@DateTime.Now.Year yılının Makale Yayınlama Analizi</h5>
                             <div id="customTotalRevenueChart" class="px-2"></div>
                         </div>
                     </div>
@@ -507,5 +472,7 @@
         app.Urls = app.Urls || {}
 
         app.Urls.yearlyArticlesUrl = "@(Url.Action("YearlyArticleCounts", "Default"))";
+        app.Urls.totalCategoryCountUrl = "@(Url.Action("TotalCategoryCount", "Default"))";
+        app.Urls.totalArticleCountUrl = "@(Url.Action("TotalArticleCount", "Default"))";
     </script>
 }

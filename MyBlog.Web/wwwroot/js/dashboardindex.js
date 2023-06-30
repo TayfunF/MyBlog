@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
     var yearlyArticlesUrl = app.Urls.yearlyArticlesUrl;
+    var totalCategoryCountUrl = app.Urls.totalCategoryCountUrl;
+    var totalArticleCountUrl = app.Urls.totalArticleCountUrl;
 
     $.ajax({
         type: "GET",
@@ -274,5 +276,29 @@
                 totalRevenueChart.render();
             }
         }
-    })
+    });
+
+    $.ajax({
+        type: "GET",
+        url: totalCategoryCountUrl,
+        dataType: "json",
+        success: function (data) {
+            $("h3#totalCategory").append(data);
+        },
+        error: function () {
+            toastr.error("Kategori Sayısı Yüklenirken Hata Oluştu", "Hata");
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: totalArticleCountUrl,
+        dataType: "json",
+        success: function (data) {
+            $("h3#totalArticle").append(data);
+        },
+        error: function () {
+            toastr.error("Makale Sayısı Yüklenirken Hata Oluştu", "Hata");
+        }
+    });
 })

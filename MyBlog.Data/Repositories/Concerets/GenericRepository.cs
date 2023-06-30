@@ -29,14 +29,18 @@ namespace MyBlog.Data.Repositories.Concerets
             await Table.AddAsync(entity);
         }
 
-        public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
-            return Table.AnyAsync(predicate);
+            if (predicate != null)
+                return await Table.AnyAsync(predicate);
+            return await Table.AnyAsync();
         }
 
-        public Task<int> CountAsync(Expression<Func<T, bool>> predicate = null)
+        public async Task<int> CountAsync(Expression<Func<T, bool>> predicate = null)
         {
-            return Table.CountAsync(predicate);
+            if (predicate is not null)
+                return await Table.CountAsync(predicate);
+            return await Table.CountAsync();
         }
 
         public async Task DeleteAsync(T entity)
