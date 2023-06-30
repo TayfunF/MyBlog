@@ -17,5 +17,6 @@ namespace MyBlog.Service.Services.Abstracts
         Task<string> UpdateCategoryAsync(CategoryUpdateDto categoryUpdateDto);
         Task<string> DeleteSafeCategoryAsync(Guid categoryId);
         Task<string> DeleteUndoCategoryAsync(Guid categoryId);
+        Task<List<CategoryDto>> GetAllCategoriesNonDeletedTake24Async();
     }
 }
