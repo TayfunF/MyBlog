@@ -9,12 +9,13 @@
                         <div class="col-lg-12">
                             @foreach (var item in Model.Articles)
                             {
+                                <input type="Hidden" id="keyword" value="@Model.CurrentPage" />
                                 <div class="blog-post">
                                     <div class="blog-thumb">
                                         <img src="/ui_stand_blog/assets/images/blog-post-01.jpg" alt="">
                                     </div>
                                     <div class="down-content">
-                                        <a href="post-details.html"><h4>@item.Title</h4></a>
+                                        <a asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id"><h4>@item.Title</h4></a>
                                         <ul class="post-info">
                                             <li>@item.AppUser.FirstName @item.AppUser.LastName</li>
                                             <li>@item.CreatedDate.ToString("dd/MM/yyyy")</li>
@@ -34,7 +35,7 @@
                                                 <div class="col-6">
                                                     <ul class="post-share">
                                                         <li><i class="fa fa-link"></i></li>
-                                                        <li><a href="#">[Devamını Oku]</a></li>
+                                                        <li><a asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id">[Devamını Oku]</a></li>
                                                     </ul>
                                                 </div>
                                             </div>

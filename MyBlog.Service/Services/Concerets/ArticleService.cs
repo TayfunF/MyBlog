@@ -102,7 +102,7 @@ namespace MyBlog.Service.Services.Concerets
         //Silinmemis makaleyi kategorisi ile beraber getir.
         public async Task<ArticleDto> GetArticleWithCategoryNonDeletedAsync(Guid articleId)
         {
-            var article = await _unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id == articleId, x => x.Category, i => i.Image);
+            var article = await _unitOfWork.GetRepository<Article>().GetAsync(x => !x.IsDeleted && x.Id == articleId, x => x.Category, i => i.Image, u => u.AppUser);
             var map = _mapper.Map<ArticleDto>(article);
 
             return map;
