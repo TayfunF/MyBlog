@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyBlog.Service.Services.Abstracts;
 using MyBlog.Web.Models;
 using System.Diagnostics;
 
@@ -8,14 +9,17 @@ namespace MyBlog.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IArticleService _articleService;
+
+        public HomeController(ILogger<HomeController> logger, IArticleService articleService)
         {
             _logger = logger;
+            _articleService = articleService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(Guid? categoryId, int currentPage = 1, int pageSize = 3, bool isAscending = false)
         {
-            return View();
+            return View(await _articleService.GetAllByPagingAsync(categoryId, currentPage, pageSize, isAscending));
         }
 
         public IActionResult Privacy()

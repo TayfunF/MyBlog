@@ -140,8 +140,8 @@ namespace MyBlog.Service.Services.Concerets
             pageSize = pageSize > 20 ? 20 : pageSize;
 
             var articles = categoryId == null
-                ? await _unitOfWork.GetRepository<Article>().GetAllAsync(x => !x.IsDeleted, a => a.Category, i => i.Image)
-                : await _unitOfWork.GetRepository<Article>().GetAllAsync(a => a.CategoryId == categoryId && !a.IsDeleted, x => x.Category, i => i.Image);
+                ? await _unitOfWork.GetRepository<Article>().GetAllAsync(x => !x.IsDeleted, a => a.Category, i => i.Image, u => u.AppUser)
+                : await _unitOfWork.GetRepository<Article>().GetAllAsync(a => a.CategoryId == categoryId && !a.IsDeleted, x => x.Category, i => i.Image, u => u.AppUser);
 
             var sortedArticles = isAscending
                 ? articles.OrderBy(x => x.CreatedDate).Skip((currentPage - 1) * pageSize).Take(pageSize).ToList()
