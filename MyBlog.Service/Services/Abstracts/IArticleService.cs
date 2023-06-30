@@ -1,4 +1,5 @@
 ﻿using MyBlog.Entity.DTOs.Articles;
+using MyBlog.Entity.DTOs.Categories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace MyBlog.Service.Services.Abstracts
         Task<string> DeleteUndoArticleAsync(Guid articleId);
         Task<ArticleListDto> GetAllByPagingAsync(Guid? categoryId, int currentPage = 1, int pageSize = 3, bool isAscending = false);
         Task<ArticleListDto> SearchAsync(string keyword, int currentPage = 1, int pageSize = 3, bool isAscending = false);
+        Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedTake3Async();
     }
 }

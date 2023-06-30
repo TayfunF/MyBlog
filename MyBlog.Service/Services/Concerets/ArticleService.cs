@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using MyBlog.Core.Enums;
 using MyBlog.Data.UnitOfWorks;
 using MyBlog.Entity.DTOs.Articles;
+using MyBlog.Entity.DTOs.Categories;
 using MyBlog.Entity.Entities;
 using MyBlog.Service.Extensions;
 using MyBlog.Service.Services.Abstracts;
@@ -42,7 +43,7 @@ namespace MyBlog.Service.Services.Concerets
             Image image = new Image(imageUpload.FullName, articleAddDto.Photo.ContentType, userEmail);
             await _unitOfWork.GetRepository<Image>().AddAsync(image);
 
-            var article = new Article(articleAddDto.Title, articleAddDto.Content, user, userEmail, articleAddDto.CategoryId, image.Id);          
+            var article = new Article(articleAddDto.Title, articleAddDto.Content, user, userEmail, articleAddDto.CategoryId, image.Id);
 
             await _unitOfWork.GetRepository<Article>().AddAsync(article);
             await _unitOfWork.SaveAsync();
@@ -106,6 +107,17 @@ namespace MyBlog.Service.Services.Concerets
             var map = _mapper.Map<ArticleDto>(article);
 
             return map;
+        }
+
+        //En son eklenen 3 makaleyi getir.
+        public async Task<List<ArticleDto>> GetAllArticlesWithCategoryNonDeletedTake3Async()
+        {
+            var articles = await _unitOfWork.GetRepository<Article>().GetAllAsync(x => !x.IsDeleted, x => x.Category);
+            var map = _mapper.Map<List<ArticleDto>>(articles);
+
+            var takeRecentArticles = map.TakeLast(3).ToList();
+
+            return takeRecentArticles;
         }
 
         //Makele guncelleme.
