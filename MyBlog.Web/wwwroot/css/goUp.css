@@ -1,0 +1,8 @@
+﻿#goTopButton {
+    display: none; /* İlk başta butonu gizle */
+    position: fixed;
+    bottom: 20px; /* İstenilen alt boşluğa göre ayarlayın */
+    right: 350px; /* İstenilen sağ boşluğa göre ayarlayın */
+    z-index: 99; /* İstenilen z-index değerine göre ayarlayın */
+    cursor: pointer;
+}
