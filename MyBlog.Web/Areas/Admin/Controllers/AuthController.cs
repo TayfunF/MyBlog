@@ -68,7 +68,7 @@ namespace MyBlog.Web.Areas.Admin.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction("Index", "Default", new { Area = "" });
+            return RedirectToAction("Login", "Auth", new { Area = "Admin" });
         }
 
         [Authorize]
