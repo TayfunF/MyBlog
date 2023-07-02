@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyBlog.Service.Services.Abstracts;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
 
 namespace MyBlog.Web.Areas.Admin.Controllers
 {
@@ -10,15 +11,20 @@ namespace MyBlog.Web.Areas.Admin.Controllers
     {
         private readonly IArticleService _articleService;
         private readonly IDashboardService _dashboardService;
+        private readonly IUserService _userService;
 
-        public DefaultController(IArticleService articleService, IDashboardService dashboardService)
+        public DefaultController(IArticleService articleService, IDashboardService dashboardService, IUserService userService)
         {
             _articleService = articleService;
             _dashboardService = dashboardService;
+            _userService = userService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
+            ViewBag.fullName = await _userService.GetUsername();
+
             return View(await _articleService.GetAllArticlesWithCategoryNonDeletedAsync());
         }
 

@@ -1,21 +1,13 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en"
-      class="light-style layout-menu-fixed"
-      dir="ltr"
-      data-theme="theme-default"
-      data-assets-path="~/sneatAdminTemplate/assets/"
-      data-template="vertical-menu-template-free">
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="~/sneatAdminTemplate/assets/" data-template="vertical-menu-template-free">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <title>@ViewBag.Title</title>
-
     <meta name="description" content="" />
-
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="~/sneatAdminTemplate/assets/img/favicon/favicon.ico" />
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +15,6 @@
 
     <!-- DATA TABLE -->
     <link href="~/dataTable/datatables.bootstrap4.min.css" rel="stylesheet" />
-
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="~/sneatAdminTemplate/assets/vendor/fonts/boxicons.css" />
@@ -134,6 +125,18 @@
                         </a>
                     </li>
                     <li class="menu-item">
+                        <a asp-area="Admin" asp-controller="About" asp-action="Index" class="menu-link">
+                            <i class='menu-icon bx bx-category'></i>
+                            <div data-i18n="Analytics">Hakkımda</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a asp-area="Admin" asp-controller="Contact" asp-action="Index" class="menu-link">
+                            <i class='menu-icon bx bx-category'></i>
+                            <div data-i18n="Analytics">İletişim</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
                         <a asp-area="Admin" asp-controller="SocialMedia" asp-action="Index" class="menu-link">
                             <i class='menu-icon bx bx-network-chart'></i>
                             <div data-i18n="Analytics">Sosyal Medya</div>
@@ -192,6 +195,7 @@
                 </ul>
             </aside>
             <!-- / Menu -->
+
             <!-- Layout container -->
             <div class="layout-page">
                 <!-- Navbar -->
@@ -208,51 +212,31 @@
                         <!-- Search -->
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
-                                <i class="bx bx-search fs-4 lh-0"></i>
-                                <input type="text"
-                                       class="form-control border-0 shadow-none"
-                                       placeholder="Search..."
-                                       aria-label="Search..." />
+                                <span>MyBlog / @ViewBag.Title</span>
                             </div>
                         </div>
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
-                            <!-- Place this tag where you want the button to render. -->
-                            <li class="nav-item lh-1 me-3">
-                                <a class="github-button"
-                                   href="https://github.com/themeselection/sneat-html-admin-template-free"
-                                   data-icon="octicon-star"
-                                   data-size="large"
-                                   data-show-count="true"
-                                   aria-label="Star themeselection/sneat-html-admin-template-free on GitHub">Star</a>
-                            </li>
-
                             <!-- User -->
                             @await Component.InvokeAsync("DashboardHeader")
                             <!--/ User -->
                         </ul>
                     </div>
                 </nav>
-
                 <!-- / Navbar -->
+
                 <!-- Content wrapper -->
                 @RenderBody()
                 <!-- Content wrapper -->
+
             </div>
             <!-- / Layout page -->
         </div>
-
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <div class="buy-now">
-        <a href="https://themeselection.com/products/sneat-bootstrap-html-admin-template/"
-           target="_blank"
-           class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

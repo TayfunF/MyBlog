@@ -201,5 +201,16 @@ namespace MyBlog.Service.Services.Concerets
             else
                 return false;
         }
+
+        //Sisteme giris yapan kisinin ad soyadini alabilmek icin (user controllerde kullandim)
+        public async Task<string> GetUsername()
+        {
+            var userId = _user.GetLoggedInUserId();
+            var getUser = await _unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userId);
+
+            var fullName = getUser.FirstName + " " + getUser.LastName;
+
+            return fullName;
+        }
     }
 }
