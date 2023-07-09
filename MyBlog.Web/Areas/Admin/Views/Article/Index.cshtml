@@ -15,7 +15,7 @@
     <div class="card">
         <h5 class="card-header"> Table Basic</h5>
         <div class="table-responsive text-nowrap m-3">
-            @if (User.IsInRole($"{RoleConsts.Editor}"))
+            @if (!User.IsInRole($"{RoleConsts.Editor}"))
             {
                 <a class="btn btn-primary mb-3" asp-area="Admin" asp-controller="Article" asp-action="Add">Makale Ekle <i class="bx bx-plus"></i></a>
             }
