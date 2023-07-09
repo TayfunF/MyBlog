@@ -12,7 +12,13 @@
                                 <input type="Hidden" id="keyword" value="@Model.CurrentPage" />
                                 <div class="blog-post">
                                     <div class="blog-thumb">
-                                        <img src="/ui_stand_blog/assets/images/blog-post-01.jpg" alt="">
+                                        @if (item.Image != null)
+                                        {
+                                            <img src="@item.Image" width="770" height="340" alt="@item.Image.FileName">
+                                        }else
+                                        {
+                                            <img src="/ui_stand_blog/assets/images/blog-post-01.jpg" alt="Resim bulunamadı">
+                                        }
                                     </div>
                                     <div class="down-content">
                                         <a asp-controller="Home" asp-action="Detail" asp-route-id="@item.Id"><h4>@item.Title</h4></a>
